@@ -5,7 +5,7 @@
   "main": "dist/application.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node dist/server.js"
+    "dev": "node node_modules/tsc-watch/lib/tsc-watch.js --onSuccess 'node ./dist/server.js'"
   },
   "author": "",
   "license": "ISC",
@@ -19,6 +19,7 @@
   "devDependencies": {
     "espower-typescript": "^8.1.2",
     "mocha": "^4.1.0",
-    "power-assert": "^1.4.4"
+    "power-assert": "^1.4.4",
+    "tsc-watch": "^1.0.13"
   }
 }
