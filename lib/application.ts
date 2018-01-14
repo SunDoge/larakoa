@@ -5,7 +5,7 @@ import * as fs from 'fs'
 import { Router } from './routing/router';
 import { Server } from 'http'
 
-type Options = { baseDir: string, type: any };
+export type Options = { baseDir: string, type: any };
 
 export class Application extends KoaApplication {
 
