@@ -1,0 +1,24 @@
+{
+  "name": "larakoa",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/application.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node dist/server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/koa-router": "^7.0.27",
+    "injection-js": "^2.1.0",
+    "koa": "^2.3.0",
+    "koa-router": "^7.3.0",
+    "reflect-metadata": "^0.1.10"
+  },
+  "devDependencies": {
+    "espower-typescript": "^8.1.2",
+    "mocha": "^4.1.0",
+    "power-assert": "^1.4.4"
+  }
+}
