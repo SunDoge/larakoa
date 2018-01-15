@@ -34,9 +34,9 @@ import 'reflect-metadata'
 import { ReflectiveInjector, Injectable, Inject, ResolvedReflectiveProvider } from 'injection-js';
 import { Injector } from 'injection-js/injector';
 import { Application } from './application'
-import * as Router from 'koa-router'
-import { IRouterOptions } from 'koa-router'
-import { Router as Router1 } from './routing/router'
+// import * as Router from 'koa-router'
+// import { IRouterOptions } from 'koa-router'
+// import { Router as Router1 } from './routing/router'
 
 const app = new Application();
 
@@ -55,7 +55,16 @@ const app = new Application();
 //     ctx.body = 'Hello World. id: ' + ctx.params['id'];
 // });
 
-app.router.group('/user', (router: Router) => {
+
+
+app.router.group('/user', [
+    async (ctx, next) => {
+        // Log the request to the console
+        console.log('Url:', ctx.url);
+        // Pass the request to the next middleware function
+        await next();
+    }
+], (router) => {
     router.get('/', (ctx) => {
         ctx.body = 'hello, user';
     })
