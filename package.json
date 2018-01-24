@@ -2,7 +2,8 @@
   "name": "larakoa",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/application.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "node node_modules/tsc-watch/lib/tsc-watch.js --onSuccess 'node ./dist/server.js'"
