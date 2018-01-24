@@ -34,6 +34,10 @@ import 'reflect-metadata'
 import { ReflectiveInjector, Injectable, Inject, ResolvedReflectiveProvider } from 'injection-js';
 import { Injector } from 'injection-js/injector';
 import { Application } from './application'
+import { Controller } from './routing/controller';
+import * as BaseRouter from 'koa-router';
+import { Context } from 'koa';
+import { Router } from './routing/router';
 // import * as Router from 'koa-router'
 // import { IRouterOptions } from 'koa-router'
 // import { Router as Router1 } from './routing/router'
@@ -41,13 +45,46 @@ import { Application } from './application'
 const app = new Application();
 
 
-
+// app.register({provide: BaseRouter, useFactory: function() {return new BaseRouter();} });
+// app.register(Router)
 // app.resolveAndCreate();
 
-// const router: Router = app.make(Router); 
+async function responseTime(ctx: Context, next: Function) {
+    const start = Date.now();
+    await next();
+    const ms = Date.now() - start + 100;
+    ctx.set('X-Response-Time', `${ms}ms`);
+}
+
+app.register({
+    provide: 'api', useValue: responseTime
+});
+
+app.resolveAndCreate();
+
+
+// app.use(app.make('api'));
+
+// const router: Router = app.make(Router);
+// app.router.group({ namespace: 'test/namespace' }, (router) => {
+//     router.group({ prefix: 'group' }, () => {
+//         router.group({ middleware: 'api' }, () => {
+//             router.get('/', { fn: async (ctx) => { ctx.body = 'fuck'; } });
+//         })
+//     });
+// });
+
+app.router.get('/', async (ctx) => {
+    ctx.body = JSON.stringify({
+        'code': 'ok',
+        'error': false,
+        'payload': 'Hello World'
+    });
+});
+
 // var router = new Router();
 
-
+console.log(app.router._routes);
 
 
 // router.get('/:id', async ctx => {
@@ -57,22 +94,7 @@ const app = new Application();
 
 
 
-app.router.group('/user', [
-    async (ctx, next) => {
-        // Log the request to the console
-        console.log('Url:', ctx.url);
-        // Pass the request to the next middleware function
-        await next();
-    }
-], (router) => {
-    router.get('/', (ctx) => {
-        ctx.body = 'hello, user';
-    })
-    router.get('/:id', (ctx) => {
-        console.log(ctx.params);
-        ctx.body = 'Hello World. id: ' + ctx.params['id'];
-    });
-});
+
 
 
 

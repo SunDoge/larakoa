@@ -1,4 +1,4 @@
-// import {Context} from 'koa'
+import {Context} from 'koa'
 
 export class Controller {
     // validate(ctx: Context, rules: {}, messages: {}, customAttribute: {}) {
@@ -8,4 +8,11 @@ export class Controller {
     // getValidationFactory() {
 
     // }
+
+    ctx: Context;
+
+    setContext(ctx: Context) {
+        this.ctx = ctx;
+        return this;
+    }
 }
