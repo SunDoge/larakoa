@@ -67,6 +67,8 @@ export class Application extends KoaApplication {
         } else {
             this.providers.push(provider);
         }
+
+        this.resolveAndCreate();
     }
 
     resolveAndCreate() {

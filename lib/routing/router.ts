@@ -195,10 +195,10 @@ export class Router {
         } else if (typeof action == 'function') {
             return { fn: action }
         }
-        console.log('action', action)
+        // console.log('action', action)
         if (action.middleware != undefined && typeof action.middleware == 'string') {
             action.middleware = action.middleware.split('|');
-            console.log(action.middleware);
+            // console.log(action.middleware);
         }
 
         return action;
@@ -320,7 +320,7 @@ export class Router {
             
             for (let m of route.action.middleware) {
                 middleware.push(this.app.make(m))
-                console.log('m = ', m)
+                // console.log('m = ', m)
             }
         }
 

@@ -60,7 +60,6 @@ app.register({
     provide: 'api', useValue: responseTime
 });
 
-app.resolveAndCreate();
 
 
 // app.use(app.make('api'));
@@ -84,7 +83,7 @@ app.router.get('/', async (ctx) => {
 
 // var router = new Router();
 
-console.log(app.router._routes);
+// console.log(app.router._routes);
 
 
 // router.get('/:id', async ctx => {
@@ -96,9 +95,10 @@ console.log(app.router._routes);
 
 
 
+const port = 3000;
 
-
-app.listen(3000);
+console.log('listen on', port);
+app.listen(port);
 
 
 
