@@ -258,6 +258,44 @@ export class Router {
         return this;
     }
 
+    post(uri: string, action: IAction| IMiddleware): Router {
+        this.addRoute('post', uri, action);
+        return this;
+    }
+
+    put(uri: string, action: IAction| IMiddleware): Router {
+        this.addRoute('put', uri, action);
+        return this;
+    }
+
+    patch(uri: string, action: IAction| IMiddleware): Router {
+        this.addRoute('patch', uri, action);
+        return this;
+    }
+
+    del(uri: string, action: IAction| IMiddleware): Router {
+        this.addRoute('del', uri, action);
+        return this;
+    }
+
+    delete(uri: string, action: IAction| IMiddleware): Router {
+        this.addRoute('delete', uri, action);
+        return this;
+    }
+
+    all(uri: string, action: IAction| IMiddleware): Router {
+        this.addRoute('all', uri, action);
+        return this;
+    }
+
+    static url(path: string | RegExp, params: Object): string {
+        return BaseRouter.url(path, params);
+    }
+
+    redirect(source: string, destination: string, code?: number): Router {
+        return this.baseRouter.redirect.apply(this);
+    }
+
     getRoutes(): any {
 
         return this._routes;
