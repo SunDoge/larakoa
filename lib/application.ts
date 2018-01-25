@@ -8,6 +8,7 @@ import { Router } from './routing/router';
 import * as BaseRouter from 'koa-router';
 import * as path from 'path';
 import { IncomingMessage, ServerResponse, Server } from 'http';
+import { Controller } from './routing/controller';
 
 export type Options = { baseDir: string, type: any };
 
@@ -15,25 +16,28 @@ export class Application extends KoaApplication {
 
     options: Options;
     injector: Injector;
-    providers: Array<Provider>;
+    providers: Array<Provider> = [];
     router: Router;
+    controllers: Map<string, Controller> = new Map();
 
     constructor(options: Options = { baseDir: process.cwd(), type: 'application' }) {
+
+        super();
 
         assert(typeof options.baseDir === 'string', 'options.baseDir required, and must be a string');
         assert(fs.existsSync(options.baseDir), `Directory ${options.baseDir} not exists`);
         assert(fs.statSync(options.baseDir).isDirectory(), `Directory ${options.baseDir} is not a directory`);
         assert(options.type === 'application' || options.type === 'agent', 'options.type should be application or agent');
 
-        super();
 
         this.options = options;
-        this.providers = [];
 
 
         // Final works
         this.bootstrapContainer();
         this.bootstrapRouter();
+
+        // console.log(this);
     }
 
     bootstrapRouter() {
@@ -50,7 +54,6 @@ export class Application extends KoaApplication {
         this.register({ provide: 'app', useValue: this });
         this.register({ provide: Application, useValue: this });
         this.registerContainerAliases();
-        this.resolveAndCreate();
     }
 
     registerContainerAliases() {
@@ -90,6 +93,14 @@ export class Application extends KoaApplication {
     //     return this.make(className)[methodName];
     // }
 
+    baseDir(): string {
+        return this.options.baseDir;
+    }
+
+    path(): string {
+        return __dirname;
+    }
+
     listen(...args: any[]): Server {
 
         this.useRouter();
@@ -116,6 +127,8 @@ export class Application extends KoaApplication {
     //     request.ip = request.ips[0] || req.socket.remoteAddress || '';
     //     context.accept = request.accept = accepts(req);
     //     context.state = {};
+
+    //     console.log(context.app.injector)
     //     return context;
     // }
 }

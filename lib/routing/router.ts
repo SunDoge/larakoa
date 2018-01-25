@@ -2,6 +2,7 @@ import * as BaseRouter from 'koa-router';
 import { Injectable, Inject } from 'injection-js';
 import { Context } from 'koa';
 import { Application } from '../application';
+import { Controller } from './controller';
 
 export type IMiddleware = BaseRouter.IMiddleware;
 
@@ -253,37 +254,37 @@ export class Router {
         return action;
     }
 
-    get(uri: string, action: IAction| IMiddleware): Router {
+    get(uri: string, action: IAction | IMiddleware | string): Router {
         this.addRoute('get', uri, action);
         return this;
     }
 
-    post(uri: string, action: IAction| IMiddleware): Router {
+    post(uri: string, action: IAction | IMiddleware | string): Router {
         this.addRoute('post', uri, action);
         return this;
     }
 
-    put(uri: string, action: IAction| IMiddleware): Router {
+    put(uri: string, action: IAction | IMiddleware | string): Router {
         this.addRoute('put', uri, action);
         return this;
     }
 
-    patch(uri: string, action: IAction| IMiddleware): Router {
+    patch(uri: string, action: IAction | IMiddleware | string): Router {
         this.addRoute('patch', uri, action);
         return this;
     }
 
-    del(uri: string, action: IAction| IMiddleware): Router {
+    del(uri: string, action: IAction | IMiddleware | string): Router {
         this.addRoute('del', uri, action);
         return this;
     }
 
-    delete(uri: string, action: IAction| IMiddleware): Router {
+    delete(uri: string, action: IAction | IMiddleware | string): Router {
         this.addRoute('delete', uri, action);
         return this;
     }
 
-    all(uri: string, action: IAction| IMiddleware): Router {
+    all(uri: string, action: IAction | IMiddleware | string): Router {
         this.addRoute('all', uri, action);
         return this;
     }
@@ -315,9 +316,9 @@ export class Router {
 
         // if (route.action) {
 
-        
+
         if (route.action.middleware) {
-            
+
             for (let m of route.action.middleware) {
                 middleware.push(this.app.make(m))
                 // console.log('m = ', m)
@@ -326,11 +327,24 @@ export class Router {
 
         if (route.action.uses) {
             const callable = route.action.uses.split('@');
-            const className = callable[0];
+            const classPath =  this.app.baseDir() +'/dist/' + callable[0];
+            // console.log('classPath:', classPath);
+            // console.log('path', this.app.path())
             const methodName = callable[1];
+
+            let controller = require(classPath);
+
+            this.app.controllers.set(callable[0], new controller);
+
+            // console.log(this.app.controllers);
+
             middleware.push(async (ctx: Context) => {
-                await (ctx.app as Application).make(className).setContext(ctx)[methodName];
+                // await (ctx.app as Application).make(className).setContext(ctx)[methodName];
+                // console.log(methodName)
+                // console.log(((ctx.app as Application).controllers.get(callable[0])!.setContext(ctx) as any)[methodName])
+                await ((ctx.app as Application).controllers.get(callable[0])!.setContext(ctx) as any)[methodName]();
             });
+            
         } else if (route.action.fn) {
             middleware.push(route.action.fn)
         }

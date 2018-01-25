@@ -11,7 +11,7 @@ export class Controller {
 
     ctx: Context;
 
-    setContext(ctx: Context) {
+    setContext(ctx: Context): Controller {
         this.ctx = ctx;
         return this;
     }
