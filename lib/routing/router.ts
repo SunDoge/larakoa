@@ -327,7 +327,7 @@ export class Router {
 
         if (route.action.uses) {
             const callable = route.action.uses.split('@');
-            const classPath =  this.app.baseDir() +'/dist/' + callable[0];
+            const classPath =  this.app.baseDir() +'/' + callable[0];
             // console.log('classPath:', classPath);
             // console.log('path', this.app.path())
             const methodName = callable[1];
